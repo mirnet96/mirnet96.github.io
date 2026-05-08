@@ -3,1083 +3,582 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오기창 | PHP Full-Stack Developer</title>
+<title>Oh Gi-chang | PHP Full-Stack Developer</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #080c10;
-    --surface: #0d1520;
-    --surface2: #111d2e;
-    --border: #1e3a5a;
-    --accent: #00c8ff;
-    --accent2: #00ff9d;
-    --accent3: #ff6b35;
-    --text: #c8dae8;
-    --text-dim: #5a7a99;
-    --text-bright: #e8f4ff;
-    --glow: rgba(0, 200, 255, 0.15);
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          mono: ['"JetBrains Mono"', 'monospace'],
+          sans: ['"Noto Sans KR"', 'sans-serif'],
+        },
+        colors: {
+          bg:      '#080c10',
+          sur:     '#0d1520',
+          sur2:    '#111d2e',
+          bdr:     '#1e3a5a',
+          acc:     '#00c8ff',
+          acc2:    '#00ff9d',
+          acc3:    '#ff6b35',
+          dim:     '#5a7a99',
+          bright:  '#e8f4ff',
+          muted:   '#c8dae8',
+        }
+      }
+    }
   }
+</script>
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
+<style>
   html { scroll-behavior: smooth; }
-
   body {
-    background: var(--bg);
-    color: var(--text);
+    background: #080c10;
+    color: #c8dae8;
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 300;
     overflow-x: hidden;
   }
-
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  ::-webkit-scrollbar-track { background: #080c10; }
+  ::-webkit-scrollbar-thumb { background: #1e3a5a; border-radius: 2px; }
 
-  /* Grid background */
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
     background-image:
-      linear-gradient(rgba(0,200,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,200,255,0.03) 1px, transparent 1px);
+      linear-gradient(rgba(0,200,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,255,0.025) 1px, transparent 1px);
     background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
   }
 
-  /* ===== NAV ===== */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 18px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(8, 12, 16, 0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(30, 58, 90, 0.5);
-  }
-
-  .nav-logo {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-  }
-
-  .nav-logo span { color: var(--text-dim); }
-
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--text-dim);
-    text-decoration: none;
-    letter-spacing: 0.08em;
-    transition: color 0.2s;
-    position: relative;
-  }
-
-  .nav-links a::before {
-    content: '//';
-    margin-right: 4px;
-    color: var(--accent);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--accent); }
-  .nav-links a:hover::before { opacity: 1; }
-
-  /* ===== HERO ===== */
-  #hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 120px 48px 80px;
-    z-index: 1;
-  }
-
-  .hero-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  .hero-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--accent2);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.2s forwards;
-  }
-
-  .hero-name {
-    font-size: clamp(52px, 8vw, 100px);
-    font-weight: 900;
-    line-height: 0.95;
-    color: var(--text-bright);
-    letter-spacing: -0.02em;
-    margin-bottom: 12px;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.35s forwards;
-  }
-
-  .hero-name .accent { color: var(--accent); }
-
-  .hero-subtitle {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(14px, 2vw, 20px);
-    color: var(--text-dim);
-    margin-bottom: 40px;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.5s forwards;
-  }
-
-  .hero-subtitle .highlight {
-    color: var(--accent3);
-    font-weight: 500;
-  }
-
-  .hero-stats {
-    display: flex;
-    gap: 48px;
-    margin-bottom: 48px;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.65s forwards;
-  }
-
-  .stat-item { }
-
-  .stat-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 40px;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1;
-    display: block;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
-
-  .hero-cta {
-    display: flex;
-    gap: 16px;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.8s forwards;
-  }
-
-  .btn-primary {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    padding: 14px 28px;
-    background: var(--accent);
-    color: var(--bg);
-    text-decoration: none;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    transition: all 0.2s;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  }
-
-  .btn-primary:hover {
-    background: var(--text-bright);
-    transform: translateY(-2px);
-    box-shadow: 0 0 30px rgba(0,200,255,0.4);
-  }
-
-  .btn-secondary {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    padding: 14px 28px;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    transition: all 0.2s;
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  /* Terminal window in hero */
-  .hero-terminal {
-    position: absolute;
-    right: 48px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 480px;
-    opacity: 0;
-    animation: fadeLeft 0.8s 1s forwards;
-  }
-
-  @media (max-width: 1100px) {
-    .hero-terminal { display: none; }
-  }
-
-  .terminal-win {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 0 60px rgba(0,200,255,0.1), 0 40px 80px rgba(0,0,0,0.5);
-  }
-
-  .terminal-bar {
-    background: var(--surface2);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .dot { width: 10px; height: 10px; border-radius: 50%; }
-  .dot-r { background: #ff5f56; }
-  .dot-y { background: #ffbd2e; }
-  .dot-g { background: #27c93f; }
-
-  .terminal-title {
-    flex: 1;
-    text-align: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-  }
-
-  .terminal-body {
-    padding: 20px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    line-height: 1.8;
-  }
-
-  .t-line { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 2px; }
-  .t-prompt { color: var(--accent2); flex-shrink: 0; }
-  .t-cmd { color: var(--text-bright); }
-  .t-out { color: var(--text-dim); padding-left: 20px; }
-  .t-key { color: var(--accent); }
-  .t-val { color: var(--accent3); }
-  .t-str { color: var(--accent2); }
-
-  .cursor-blink {
-    display: inline-block;
-    width: 8px;
-    height: 14px;
-    background: var(--accent);
-    animation: blink 1s infinite;
-    vertical-align: text-bottom;
-  }
-
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-  /* ===== SECTIONS ===== */
-  section {
-    position: relative;
-    z-index: 1;
-    padding: 100px 48px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-header {
-    margin-bottom: 60px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .section-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-  }
-
-  .section-title {
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--text-bright);
-    letter-spacing: -0.02em;
-  }
-
-  .section-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--border), transparent);
-  }
-
-  /* ===== SKILLS ===== */
-  #skills { padding-top: 0; }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2px;
-    background: var(--border);
-    border: 1px solid var(--border);
-  }
-
-  .skill-block {
-    background: var(--surface);
-    padding: 28px;
-    transition: background 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .skill-block::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px; height: 100%;
-    background: var(--accent);
-    transform: scaleY(0);
-    transition: transform 0.3s;
-    transform-origin: bottom;
-  }
-
-  .skill-block:hover { background: var(--surface2); }
-  .skill-block:hover::before { transform: scaleY(1); }
-
-  .skill-block.featured::before { transform: scaleY(1); background: var(--accent3); }
-  .skill-block.featured { background: var(--surface2); }
-
-  .skill-lang {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-
-  .skill-lang.php { color: #8892be; }
-  .skill-lang.frontend { color: #61dafb; }
-  .skill-lang.db { color: #f29111; }
-  .skill-lang.infra { color: var(--accent2); }
-  .skill-lang.data { color: #d63384; }
-
-  .skill-items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .skill-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    padding: 4px 10px;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    transition: all 0.2s;
-  }
-
-  .skill-block:hover .skill-tag {
-    border-color: rgba(0,200,255,0.3);
-    color: var(--text);
-  }
-
-  .skill-tag.main {
-    background: rgba(0,200,255,0.08);
-    border-color: rgba(0,200,255,0.4);
-    color: var(--accent);
-  }
-
-  /* ===== EXPERIENCE TIMELINE ===== */
-  .timeline {
-    position: relative;
-    padding-left: 48px;
-  }
-
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 8px;
-    bottom: 0;
-    width: 1px;
-    background: linear-gradient(180deg, var(--accent) 0%, var(--border) 60%, transparent 100%);
-  }
-
-  .timeline-item {
-    position: relative;
-    margin-bottom: 48px;
-    opacity: 0;
-    transform: translateX(-20px);
-    transition: opacity 0.5s, transform 0.5s;
-  }
-
-  .timeline-item.visible {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .timeline-dot {
-    position: absolute;
-    left: -52px;
-    top: 6px;
-    width: 10px;
-    height: 10px;
-    background: var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 12px var(--accent);
-  }
-
-  .timeline-dot.dim {
-    background: var(--border);
-    box-shadow: none;
-  }
-
-  .timeline-period {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-    margin-bottom: 6px;
-  }
-
-  .timeline-company {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text-bright);
-    margin-bottom: 4px;
-  }
-
-  .timeline-role {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    margin-bottom: 16px;
-  }
-
-  .timeline-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 20px 24px;
-    border-left: 3px solid var(--accent);
-  }
-
-  .timeline-card.old { border-left-color: var(--border); }
-
-  .timeline-tech {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 14px;
-  }
-
-  .tech-chip {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    padding: 3px 8px;
-    background: rgba(0,200,255,0.07);
-    border: 1px solid rgba(0,200,255,0.2);
-    color: var(--accent);
-    letter-spacing: 0.05em;
-  }
-
-  .tech-chip.orange {
-    background: rgba(255,107,53,0.07);
-    border-color: rgba(255,107,53,0.2);
-    color: var(--accent3);
-  }
-
-  .timeline-bullets { list-style: none; }
-
-  .timeline-bullets li {
-    font-size: 13px;
-    color: var(--text);
-    padding: 4px 0;
-    padding-left: 16px;
-    position: relative;
-    line-height: 1.6;
-  }
-
-  .timeline-bullets li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: var(--accent2);
-    font-size: 10px;
-    top: 6px;
-  }
-
-  /* ===== PROJECTS ===== */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2px;
-    background: var(--border);
-  }
-
-  .project-card {
-    background: var(--surface);
-    padding: 32px;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
-    cursor: default;
-  }
-
-  .project-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; right: 0;
-    width: 80px; height: 80px;
-    background: radial-gradient(circle at 100% 100%, var(--glow), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .project-card:hover { background: var(--surface2); }
-  .project-card:hover::after { opacity: 1; }
-
-  .project-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-    letter-spacing: 0.15em;
-    margin-bottom: 16px;
-  }
-
-  .project-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-bright);
-    margin-bottom: 10px;
-    line-height: 1.3;
-  }
-
-  .project-desc {
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.7;
-    margin-bottom: 20px;
-  }
-
-  .project-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .project-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    padding: 4px 10px;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-  }
-
-  .project-highlight {
-    position: absolute;
-    top: 20px; right: 20px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    padding: 4px 8px;
-    background: rgba(0,255,157,0.1);
-    border: 1px solid rgba(0,255,157,0.3);
-    color: var(--accent2);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  /* ===== CERTS ===== */
-  .certs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2px;
-    background: var(--border);
-  }
-
-  .cert-card {
-    background: var(--surface);
-    padding: 24px;
-    text-align: center;
-  }
-
-  .cert-year {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-bottom: 8px;
-  }
-
-  .cert-name {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text-bright);
-    margin-bottom: 4px;
-  }
-
-  .cert-org {
-    font-size: 11px;
-    color: var(--text-dim);
-  }
-
-  /* ===== CONTACT ===== */
-  .contact-row {
-    display: flex;
-    gap: 2px;
-    background: var(--border);
-  }
-
-  .contact-block {
-    flex: 1;
-    background: var(--surface);
-    padding: 32px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    transition: background 0.2s;
-  }
-
-  .contact-block:hover { background: var(--surface2); }
-
-  .contact-icon {
-    width: 44px; height: 44px;
-    background: rgba(0,200,255,0.08);
-    border: 1px solid rgba(0,200,255,0.2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
-  .contact-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-
-  .contact-value {
-    font-size: 14px;
-    color: var(--text-bright);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .contact-value:hover { color: var(--accent); }
-
-  /* ===== FOOTER ===== */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 24px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-  }
-
-  footer .copy {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-  }
-
-  /* ===== ANIMATIONS ===== */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeLeft {
-    from { opacity: 0; transform: translate(30px, -50%); }
-    to { opacity: 1; transform: translate(0, -50%); }
-  }
-
-  /* ===== PROGRESS BARS ===== */
-  .skill-bars { margin-top: 60px; }
-
-  .bar-item {
-    margin-bottom: 20px;
-  }
-
-  .bar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-
-  .bar-name {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--text);
-    letter-spacing: 0.05em;
-  }
-
-  .bar-pct {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-  }
-
-  .bar-track {
-    height: 3px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    overflow: visible;
-    position: relative;
-  }
-
-  .bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    width: 0;
-    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-  }
-
-  .bar-fill::after {
-    content: '';
-    position: absolute;
-    right: -1px;
-    top: -3px;
-    width: 3px;
-    height: 9px;
-    background: var(--accent2);
-    box-shadow: 0 0 8px var(--accent2);
-  }
-
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 768px) {
-    nav { padding: 16px 24px; }
-    .nav-links { display: none; }
-    #hero { padding: 100px 24px 60px; }
-    .hero-stats { gap: 28px; }
-    .stat-num { font-size: 28px; }
-    section { padding: 70px 24px; }
-    .timeline { padding-left: 32px; }
-    .timeline-dot { left: -36px; }
-    footer { padding: 20px 24px; flex-direction: column; gap: 8px; text-align: center; }
-    .contact-row { flex-direction: column; }
-  }
-
-  /* Glow line separator */
-  .glow-sep {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.3;
-    margin: 0 48px;
-  }
+  @keyframes blink    { 0%,100%{opacity:1} 50%{opacity:0} }
+  @keyframes fadeUp   { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeRight{ from{opacity:0;transform:translateX(28px)} to{opacity:1;transform:translateX(0)} }
+
+  .a1{animation:fadeUp .6s .15s both}
+  .a2{animation:fadeUp .6s .3s  both}
+  .a3{animation:fadeUp .6s .45s both}
+  .a4{animation:fadeUp .6s .6s  both}
+  .a5{animation:fadeUp .6s .75s both}
+  .a6{animation:fadeUp .6s .9s  both}
+  .aT{animation:fadeRight .8s 1.15s both}
+
+  .cursor-blink{display:inline-block;width:8px;height:13px;background:#00c8ff;animation:blink 1s infinite;vertical-align:text-bottom}
+
+  .nav-a{transition:color .2s}
+  .nav-a::before{content:'//';margin-right:3px;color:#00c8ff;opacity:0;transition:opacity .2s}
+  .nav-a:hover::before{opacity:1}
+  .nav-a:hover{color:#00c8ff}
+
+  .clip-btn{clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+
+  /* skill block hover bar */
+  .sk-bar{position:absolute;left:0;top:0;width:3px;height:100%;transform:scaleY(0);transform-origin:bottom;transition:transform .3s}
+  .sk:hover .sk-bar{transform:scaleY(1)}
+  .sk.feat .sk-bar{transform:scaleY(1)}
+
+  /* timeline */
+  .tl-item{opacity:0;transform:translateX(-18px);transition:opacity .5s,transform .5s}
+  .tl-item.vis{opacity:1;transform:translateX(0)}
+
+  /* project hover glow */
+  .pj{transition:background-color .25s;position:relative;overflow:hidden}
+  .pj::after{content:'';position:absolute;bottom:0;right:0;width:90px;height:90px;
+    background:radial-gradient(circle at 100% 100%,rgba(0,200,255,.13),transparent 70%);
+    opacity:0;transition:opacity .3s}
+  .pj:hover{background-color:#111d2e}
+  .pj:hover::after{opacity:1}
+
+  /* skill bars */
+  .b-fill{width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1);position:relative}
+  .b-fill::after{content:'';position:absolute;right:-1px;top:-3px;width:3px;height:9px;
+    background:#00ff9d;box-shadow:0 0 8px #00ff9d}
+
+  .material-icons{font-size:20px;line-height:1;vertical-align:middle}
+  .mi-lg{font-size:24px}
+  .mi-sm{font-size:15px}
+
+  /* sep */
+  .sep{height:1px;background:linear-gradient(90deg,transparent,#1e3a5a,transparent);opacity:.6;margin:0 3rem;position:relative;z-index:10}
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-logo"><span>~/</span>mirnet96</div>
-  <ul class="nav-links">
-    <li><a href="#skills">skills</a></li>
-    <li><a href="#experience">experience</a></li>
-    <li><a href="#projects">projects</a></li>
-    <li><a href="#contact">contact</a></li>
+<!-- NAV -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-12 py-4
+            bg-bg/85 backdrop-blur-md border-b border-bdr/50">
+  <span class="font-mono text-sm text-acc tracking-widest">
+    <span class="text-dim">~/</span>mirnet96
+  </span>
+  <ul class="hidden md:flex gap-8 list-none">
+    <li><a href="#skills"     class="nav-a font-mono text-xs text-dim tracking-widest no-underline">skills</a></li>
+    <li><a href="#experience" class="nav-a font-mono text-xs text-dim tracking-widest no-underline">experience</a></li>
+    <li><a href="#projects"   class="nav-a font-mono text-xs text-dim tracking-widest no-underline">projects</a></li>
+    <li><a href="#contact"    class="nav-a font-mono text-xs text-dim tracking-widest no-underline">contact</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
-<section id="hero" style="padding:0; max-width:none;">
-  <div style="position:relative; min-height:100vh; display:flex; align-items:center; padding:120px 48px 80px; max-width:1200px; margin:0 auto;">
-    <div class="hero-inner">
-      <div class="hero-tag">// PHP Full-Stack Developer &amp; System Architect</div>
-      <h1 class="hero-name">오기창<br><span class="accent">Gi-chang Oh</span></h1>
-      <p class="hero-subtitle">
-        <span class="highlight">Laravel · CodeIgniter · React Native</span> &nbsp;|&nbsp; 서울 기반
+<section id="hero" class="relative z-10 min-h-screen flex items-center">
+  <div class="w-full max-w-7xl mx-auto px-12 pt-24 pb-16
+              flex flex-col xl:flex-row xl:items-center gap-16">
+
+    <!-- LEFT TEXT  (takes all space, terminal sits beside) -->
+    <div class="flex-1 min-w-0">
+
+      <!-- Open-to-work badge -->
+      <div class="a1 inline-flex items-center gap-2 px-3 py-1 mb-6
+                  border border-acc2/40 bg-acc2/5">
+        <span class="w-2 h-2 rounded-full bg-acc2 animate-pulse"></span>
+        <span class="font-mono text-xs text-acc2 tracking-widest uppercase">
+          구직중 &nbsp;·&nbsp; Open to Work
+        </span>
+      </div>
+
+      <div class="a2 font-mono text-xs text-acc2 tracking-widest uppercase mb-4">
+        // PHP Full-Stack Developer &amp; System Architect
+      </div>
+
+      <h1 class="a3 font-black leading-none tracking-tight text-bright mb-3"
+          style="font-size:clamp(46px,7.5vw,92px)">
+        오기창<br><span class="text-acc">Gi-chang Oh</span>
+      </h1>
+
+      <p class="a4 font-mono text-dim mb-10" style="font-size:clamp(12px,1.4vw,17px)">
+        <span class="text-acc3">Laravel</span>&nbsp;·&nbsp;
+        <span class="text-acc3">CodeIgniter</span>&nbsp;·&nbsp;
+        <span class="text-acc3">React Native</span>
+        &nbsp;&nbsp;|&nbsp;&nbsp;서울 기반
       </p>
-      <div class="hero-stats">
-        <div class="stat-item">
-          <span class="stat-num" id="counter-years">0</span>
-          <div class="stat-label">Years Exp.</div>
+
+      <!-- Stats row -->
+      <div class="a5 flex flex-wrap gap-10 mb-10">
+        <div>
+          <span id="cy" class="font-mono font-bold text-acc block leading-none"
+                style="font-size:clamp(32px,4vw,52px)">0</span>
+          <span class="font-mono text-xs text-dim tracking-widest uppercase mt-1 block">Years Exp.</span>
         </div>
-        <div class="stat-item">
-          <span class="stat-num" id="counter-companies">0</span>
-          <div class="stat-label">Companies</div>
+        <div>
+          <span id="cc" class="font-mono font-bold text-acc block leading-none"
+                style="font-size:clamp(32px,4vw,52px)">0</span>
+          <span class="font-mono text-xs text-dim tracking-widest uppercase mt-1 block">Companies</span>
         </div>
-        <div class="stat-item">
-          <span class="stat-num" id="counter-certs">0</span>
-          <div class="stat-label">Certifications</div>
+        <div>
+          <span id="ct" class="font-mono font-bold text-acc block leading-none"
+                style="font-size:clamp(32px,4vw,52px)">0</span>
+          <span class="font-mono text-xs text-dim tracking-widest uppercase mt-1 block">Certifications</span>
         </div>
-        <div class="stat-item">
-          <span class="stat-num" id="counter-markets">0</span>
-          <div class="stat-label">API Integrations</div>
+        <div>
+          <span id="cm" class="font-mono font-bold text-acc block leading-none"
+                style="font-size:clamp(32px,4vw,52px)">0</span>
+          <span class="font-mono text-xs text-dim tracking-widest uppercase mt-1 block">API Integrations</span>
         </div>
       </div>
-      <div class="hero-cta">
-        <a href="#experience" class="btn-primary">경력 보기</a>
-        <a href="mailto:mirnet96@naver.com" class="btn-secondary">Contact</a>
+
+      <!-- CTA -->
+      <div class="a6 flex flex-wrap gap-4">
+        <a href="#experience"
+           class="clip-btn font-mono text-sm font-bold tracking-widest px-7 py-3
+                  bg-acc text-bg hover:bg-bright transition-all no-underline
+                  hover:-translate-y-0.5 hover:shadow-[0_0_28px_rgba(0,200,255,.45)]">
+          경력 보기
+        </a>
+        <a href="mailto:mirnet96@naver.com"
+           class="font-mono text-sm tracking-widest px-7 py-3 no-underline
+                  border border-bdr text-dim hover:border-acc hover:text-acc transition-all">
+          Contact
+        </a>
       </div>
     </div>
 
-    <div class="hero-terminal">
-      <div class="terminal-win">
-        <div class="terminal-bar">
-          <div class="dot dot-r"></div>
-          <div class="dot dot-y"></div>
-          <div class="dot dot-g"></div>
-          <div class="terminal-title">mirnet96@portfolio ~ php -a</div>
+    <!-- TERMINAL (only on xl) -->
+    <div class="hidden xl:block w-[430px] flex-shrink-0 aT">
+      <div class="bg-sur border border-bdr rounded-lg overflow-hidden
+                  shadow-[0_0_55px_rgba(0,200,255,.09),0_40px_80px_rgba(0,0,0,.55)]">
+        <div class="bg-sur2 px-4 py-2.5 flex items-center gap-2 border-b border-bdr">
+          <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+          <span class="flex-1 text-center font-mono text-xs text-dim">
+            mirnet96@portfolio ~ php -a
+          </span>
         </div>
-        <div class="terminal-body" id="terminal-content"></div>
+        <div id="tc" class="p-5 font-mono text-xs leading-loose min-h-[260px]"></div>
       </div>
     </div>
+
   </div>
 </section>
 
-<div class="glow-sep"></div>
+<div class="sep"></div>
 
 <!-- SKILLS -->
-<section id="skills">
-  <div class="section-header">
-    <span class="section-num">01</span>
-    <h2 class="section-title">Tech Stack</h2>
-    <div class="section-line"></div>
+<section id="skills" class="relative z-10 max-w-7xl mx-auto px-12 py-24">
+  <div class="flex items-center gap-5 mb-14">
+    <span class="font-mono text-xs text-acc tracking-widest">01</span>
+    <h2 class="text-4xl font-bold text-bright tracking-tight">Tech Stack</h2>
+    <div class="flex-1 h-px bg-gradient-to-r from-bdr to-transparent"></div>
   </div>
 
-  <div class="skills-grid">
-    <div class="skill-block featured">
-      <div class="skill-lang php">[ PHP · Core Strength ]</div>
-      <div class="skill-items">
-        <span class="skill-tag main">Laravel 12/13</span>
-        <span class="skill-tag main">CodeIgniter 4</span>
-        <span class="skill-tag main">CodeIgniter 3/2</span>
-        <span class="skill-tag">REST API</span>
-        <span class="skill-tag">FastAPI</span>
-        <span class="skill-tag">Python</span>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-bdr mb-16">
+
+    <!-- PHP - featured -->
+    <div class="sk feat relative bg-sur2 p-7 overflow-hidden hover:bg-sur2 transition-colors">
+      <div class="sk-bar bg-acc3"></div>
+      <div class="font-mono text-xs text-[#8892be] tracking-widest mb-3">[ PHP · Core Strength ]</div>
+      <div class="flex flex-wrap gap-2">
+        <span class="font-mono text-xs px-2.5 py-1 bg-acc/8 border border-acc/40 text-acc">Laravel 12/13</span>
+        <span class="font-mono text-xs px-2.5 py-1 bg-acc/8 border border-acc/40 text-acc">CodeIgniter 4</span>
+        <span class="font-mono text-xs px-2.5 py-1 bg-acc/8 border border-acc/40 text-acc">CodeIgniter 3/2</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">REST API</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">Python FastAPI</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">Node.js</span>
       </div>
     </div>
-    <div class="skill-block">
-      <div class="skill-lang frontend">[ Frontend · App ]</div>
-      <div class="skill-items">
-        <span class="skill-tag main">React Native</span>
-        <span class="skill-tag">TALL Stack</span>
-        <span class="skill-tag">Livewire</span>
-        <span class="skill-tag">Alpine.js</span>
-        <span class="skill-tag">jQuery</span>
-        <span class="skill-tag">React</span>
-        <span class="skill-tag">HTML5/CSS3</span>
+
+    <div class="sk relative bg-sur p-7 overflow-hidden hover:bg-sur2 transition-colors">
+      <div class="sk-bar bg-acc"></div>
+      <div class="font-mono text-xs text-[#61dafb] tracking-widest mb-3">[ Frontend / App ]</div>
+      <div class="flex flex-wrap gap-2">
+        <span class="font-mono text-xs px-2.5 py-1 bg-acc/8 border border-acc/40 text-acc">React Native</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">TALL Stack</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">Livewire</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">Alpine.js</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">jQuery</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">React</span>
       </div>
     </div>
-    <div class="skill-block">
-      <div class="skill-lang db">[ Database ]</div>
-      <div class="skill-items">
-        <span class="skill-tag main">MySQL / MariaDB</span>
-        <span class="skill-tag main">PostgreSQL</span>
-        <span class="skill-tag">Oracle</span>
-        <span class="skill-tag">Sphinx 검색엔진</span>
-        <span class="skill-tag">Replication</span>
-        <span class="skill-tag">DRBD</span>
+
+    <div class="sk relative bg-sur p-7 overflow-hidden hover:bg-sur2 transition-colors">
+      <div class="sk-bar bg-acc"></div>
+      <div class="font-mono text-xs text-[#f29111] tracking-widest mb-3">[ Database ]</div>
+      <div class="flex flex-wrap gap-2">
+        <span class="font-mono text-xs px-2.5 py-1 bg-acc/8 border border-acc/40 text-acc">MySQL / MariaDB</span>
+        <span class="font-mono text-xs px-2.5 py-1 bg-acc/8 border border-acc/40 text-acc">PostgreSQL</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">Oracle</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">Sphinx</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">Replication</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">DRBD</span>
       </div>
     </div>
-    <div class="skill-block">
-      <div class="skill-lang infra">[ Infra · DevOps ]</div>
-      <div class="skill-items">
-        <span class="skill-tag main">AWS (EC2/RDS/S3)</span>
-        <span class="skill-tag">Docker</span>
-        <span class="skill-tag">Linux</span>
-        <span class="skill-tag">HAProxy/LVS</span>
-        <span class="skill-tag">OpenVPN</span>
-        <span class="skill-tag">Git</span>
-        <span class="skill-tag">XenServer</span>
+
+    <div class="sk relative bg-sur p-7 overflow-hidden hover:bg-sur2 transition-colors">
+      <div class="sk-bar bg-acc"></div>
+      <div class="font-mono text-xs text-acc2 tracking-widest mb-3">[ Infra / DevOps ]</div>
+      <div class="flex flex-wrap gap-2">
+        <span class="font-mono text-xs px-2.5 py-1 bg-acc/8 border border-acc/40 text-acc">AWS EC2/RDS/S3</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">Docker</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">Linux</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">HAProxy / LVS</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">OpenVPN</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">Git</span>
       </div>
     </div>
-    <div class="skill-block">
-      <div class="skill-lang data">[ Data Engineering ]</div>
-      <div class="skill-items">
-        <span class="skill-tag main">공공데이터 크롤링</span>
-        <span class="skill-tag main">PNU 생성 로직</span>
-        <span class="skill-tag">GIS / 네이버지도</span>
-        <span class="skill-tag">오픈마켓 API</span>
-        <span class="skill-tag">YOLO v11</span>
-        <span class="skill-tag">IoT (ESP32)</span>
+
+    <div class="sk relative bg-sur p-7 overflow-hidden hover:bg-sur2 transition-colors">
+      <div class="sk-bar bg-acc"></div>
+      <div class="font-mono text-xs text-[#d63384] tracking-widest mb-3">[ Data Engineering ]</div>
+      <div class="flex flex-wrap gap-2">
+        <span class="font-mono text-xs px-2.5 py-1 bg-acc/8 border border-acc/40 text-acc">공공데이터 크롤링</span>
+        <span class="font-mono text-xs px-2.5 py-1 bg-acc/8 border border-acc/40 text-acc">PNU 생성 API</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">GIS / 네이버지도</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">오픈마켓 API</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">YOLO v11</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">IoT ESP32</span>
       </div>
     </div>
-    <div class="skill-block">
-      <div class="skill-lang php">[ Security · Systems ]</div>
-      <div class="skill-items">
-        <span class="skill-tag">ISMS 인증</span>
-        <span class="skill-tag">KISA SEED 암호화</span>
-        <span class="skill-tag">IPTables / Snort</span>
-        <span class="skill-tag">Google OTP</span>
-        <span class="skill-tag">Kickstart</span>
-        <span class="skill-tag">RRDtool</span>
+
+    <div class="sk relative bg-sur p-7 overflow-hidden hover:bg-sur2 transition-colors">
+      <div class="sk-bar bg-acc"></div>
+      <div class="font-mono text-xs text-[#8892be] tracking-widest mb-3">[ Security / Systems ]</div>
+      <div class="flex flex-wrap gap-2">
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">ISMS 인증</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">KISA SEED</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">IPTables / Snort</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">Google OTP</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">Kickstart</span>
+        <span class="font-mono text-xs px-2.5 py-1 border border-bdr text-dim">RRDtool</span>
       </div>
     </div>
   </div>
 
-  <div class="skill-bars" style="max-width:600px;">
-    <div class="bar-item">
-      <div class="bar-header"><span class="bar-name">PHP / Laravel / CodeIgniter</span><span class="bar-pct">97%</span></div>
-      <div class="bar-track"><div class="bar-fill" data-width="97"></div></div>
+  <!-- Skill bars -->
+  <div class="b-section max-w-xl space-y-5">
+    <div>
+      <div class="flex justify-between mb-2">
+        <span class="font-mono text-xs text-muted">PHP / Laravel / CodeIgniter</span>
+        <span class="font-mono text-xs text-acc">97%</span>
+      </div>
+      <div class="h-px bg-sur2 border border-bdr overflow-visible relative">
+        <div class="b-fill h-full bg-gradient-to-r from-acc to-acc2" data-w="97"></div>
+      </div>
     </div>
-    <div class="bar-item">
-      <div class="bar-header"><span class="bar-name">MySQL / PostgreSQL / Oracle</span><span class="bar-pct">93%</span></div>
-      <div class="bar-track"><div class="bar-fill" data-width="93"></div></div>
+    <div>
+      <div class="flex justify-between mb-2">
+        <span class="font-mono text-xs text-muted">MySQL / PostgreSQL / Oracle</span>
+        <span class="font-mono text-xs text-acc">93%</span>
+      </div>
+      <div class="h-px bg-sur2 border border-bdr overflow-visible relative">
+        <div class="b-fill h-full bg-gradient-to-r from-acc to-acc2" data-w="93"></div>
+      </div>
     </div>
-    <div class="bar-item">
-      <div class="bar-header"><span class="bar-name">Linux / Server Infrastructure</span><span class="bar-pct">90%</span></div>
-      <div class="bar-track"><div class="bar-fill" data-width="90"></div></div>
+    <div>
+      <div class="flex justify-between mb-2">
+        <span class="font-mono text-xs text-muted">Linux / Server Infrastructure</span>
+        <span class="font-mono text-xs text-acc">90%</span>
+      </div>
+      <div class="h-px bg-sur2 border border-bdr overflow-visible relative">
+        <div class="b-fill h-full bg-gradient-to-r from-acc to-acc2" data-w="90"></div>
+      </div>
     </div>
-    <div class="bar-item">
-      <div class="bar-header"><span class="bar-name">React Native / Frontend</span><span class="bar-pct">78%</span></div>
-      <div class="bar-track"><div class="bar-fill" data-width="78"></div></div>
+    <div>
+      <div class="flex justify-between mb-2">
+        <span class="font-mono text-xs text-muted">AWS / Docker / DevOps</span>
+        <span class="font-mono text-xs text-acc">82%</span>
+      </div>
+      <div class="h-px bg-sur2 border border-bdr overflow-visible relative">
+        <div class="b-fill h-full bg-gradient-to-r from-acc to-acc2" data-w="82"></div>
+      </div>
     </div>
-    <div class="bar-item">
-      <div class="bar-header"><span class="bar-name">AWS / Docker / DevOps</span><span class="bar-pct">82%</span></div>
-      <div class="bar-track"><div class="bar-fill" data-width="82"></div></div>
+    <div>
+      <div class="flex justify-between mb-2">
+        <span class="font-mono text-xs text-muted">React Native / Frontend</span>
+        <span class="font-mono text-xs text-acc">78%</span>
+      </div>
+      <div class="h-px bg-sur2 border border-bdr overflow-visible relative">
+        <div class="b-fill h-full bg-gradient-to-r from-acc to-acc2" data-w="78"></div>
+      </div>
     </div>
   </div>
 </section>
 
-<div class="glow-sep"></div>
+<div class="sep"></div>
 
 <!-- EXPERIENCE -->
-<section id="experience">
-  <div class="section-header">
-    <span class="section-num">02</span>
-    <h2 class="section-title">Experience</h2>
-    <div class="section-line"></div>
+<section id="experience" class="relative z-10 max-w-7xl mx-auto px-12 py-24">
+  <div class="flex items-center gap-5 mb-14">
+    <span class="font-mono text-xs text-acc tracking-widest">02</span>
+    <h2 class="text-4xl font-bold text-bright tracking-tight">Experience</h2>
+    <div class="flex-1 h-px bg-gradient-to-r from-bdr to-transparent"></div>
   </div>
 
-  <div class="timeline">
+  <div class="relative pl-12">
+    <div class="absolute left-0 top-2 bottom-0 w-px
+                bg-gradient-to-b from-acc via-bdr to-transparent"></div>
 
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-period">2025.06 — 재직 중</div>
-      <div class="timeline-company">리얼벨류 (RealValue)</div>
-      <div class="timeline-role">개발팀 수석연구원</div>
-      <div class="timeline-card">
-        <div class="timeline-tech">
-          <span class="tech-chip">Laravel 12/10</span>
-          <span class="tech-chip">PostgreSQL</span>
-          <span class="tech-chip">AWS EC2/RDS/S3</span>
-          <span class="tech-chip">MariaDB</span>
-          <span class="tech-chip orange">부동산 데이터</span>
+    <!-- 1. RealValue -->
+    <div class="tl-item relative mb-12">
+      <span class="absolute -left-[50px] top-1.5 w-2.5 h-2.5 rounded-full bg-acc
+                   shadow-[0_0_12px_#00c8ff]"></span>
+      <div class="font-mono text-xs text-dim tracking-widest mb-1">2025.06 — 2026.04</div>
+      <div class="text-2xl font-bold text-bright mb-1">리얼벨류 (RealValue)</div>
+      <div class="font-mono text-xs text-acc mb-4">개발팀 수석연구원</div>
+      <div class="bg-sur border border-bdr border-l-2 border-l-acc p-5">
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc/7 border border-acc/20 text-acc">Laravel 12/10</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc/7 border border-acc/20 text-acc">PostgreSQL</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc/7 border border-acc/20 text-acc">AWS EC2/RDS/S3</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc3/7 border border-acc3/20 text-acc3">부동산 데이터</span>
         </div>
-        <ul class="timeline-bullets">
-          <li>www.realvalue.kr 백엔드 시스템 및 데이터베이스 설계·구축 전담</li>
-          <li>네이버 지도 기반 매물정보, 실거래가, 토지대장·이용계획·건축물대장 정보 제공 API 구현</li>
-          <li>부동산 실거래가·공시지가 등 10여 종 공공데이터 수집·정제 파이프라인 구축</li>
-          <li>학군 정보, 생활 편의시설, 분양/미분양 정보 연동 내부/외부 API 설계</li>
+        <ul class="space-y-1.5 text-sm text-muted list-none">
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            www.realvalue.kr 백엔드 시스템 및 데이터베이스 설계·구축 전담
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            네이버 지도 기반 매물정보, 실거래가, 토지대장·이용계획·건축물대장 정보 제공 API 구현
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            실거래가·공시지가 등 10여 종 공공데이터 수집·정제 파이프라인 구축
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            학군 정보, 생활 편의시설, 분양/미분양 정보 연동 내부/외부 API 설계
+          </li>
         </ul>
       </div>
     </div>
 
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-period">2022.04 — 2025.06 · <em style="color:var(--text-dim)">3년 3개월</em></div>
-      <div class="timeline-company">클루웨어 (Cluware)</div>
-      <div class="timeline-role">개발팀 수석연구원 / R&amp;D 차장</div>
-      <div class="timeline-card">
-        <div class="timeline-tech">
-          <span class="tech-chip">PHP 7.4/8.1</span>
-          <span class="tech-chip">Laravel 10</span>
-          <span class="tech-chip">CodeIgniter 4</span>
-          <span class="tech-chip">React Native</span>
-          <span class="tech-chip orange">IoT (ESP32)</span>
-          <span class="tech-chip">MySQL</span>
+    <!-- 2. Cluware -->
+    <div class="tl-item relative mb-12">
+      <span class="absolute -left-[50px] top-1.5 w-2.5 h-2.5 rounded-full bg-acc
+                   shadow-[0_0_12px_#00c8ff]"></span>
+      <div class="font-mono text-xs text-dim tracking-widest mb-1">
+        2022.04 — 2025.06
+        <span class="text-dim/60 ml-2">· 3년 3개월</span>
+      </div>
+      <div class="text-2xl font-bold text-bright mb-1">클루웨어 (Cluware)</div>
+      <div class="font-mono text-xs text-acc mb-4">개발팀 수석연구원 / R&amp;D 차장</div>
+      <div class="bg-sur border border-bdr border-l-2 border-l-acc p-5">
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc/7 border border-acc/20 text-acc">PHP 7.4/8.1</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc/7 border border-acc/20 text-acc">Laravel 10</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc/7 border border-acc/20 text-acc">CodeIgniter 4</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc/7 border border-acc/20 text-acc">React Native</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc3/7 border border-acc3/20 text-acc3">IoT ESP32</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc/7 border border-acc/20 text-acc">MySQL</span>
         </div>
-        <ul class="timeline-bullets">
-          <li>컴퓨터·주변기기 전문 이커머스 플랫폼 프론트/백엔드 전반 개발 (1인 개발)</li>
-          <li>스마트스토어, 쿠팡, 11번가, 옥션, G마켓 등 <strong style="color:var(--accent)">6대 오픈마켓 API</strong> 상품·주문·송장 연동 자동화</li>
-          <li>판매자·공급자·관리자 3개 독립 사이트 설계 및 권한별 API 개발</li>
-          <li>공급처용 React Native Android 앱 개발 (가격·재고·주문 관리)</li>
-          <li>ESP32 기반 온습도 IoT 디바이스 + Laravel API + React Native 앱 연동 시스템 구축</li>
+        <ul class="space-y-1.5 text-sm text-muted list-none">
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            컴퓨터·주변기기 전문 이커머스 플랫폼 프론트/백엔드 전반 개발 (1인 개발)
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            <span>
+              <strong class="text-acc font-semibold">스마트스토어, 쿠팡, 11번가, 옥션, G마켓 등 6대 오픈마켓 API</strong>
+              상품·주문·송장 자동 연동 시스템 개발
+            </span>
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            판매자·공급자·관리자 권한별 독립 3개 사이트 + 연동 API 설계 및 개발
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            공급처용 React Native Android 앱 개발 (상품 가격·재고·주문 관리)
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            ESP32 온습도 IoT 디바이스 + Laravel API + React Native 앱 End-to-End 시스템 구축
+          </li>
         </ul>
       </div>
     </div>
 
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-period">2016.07 — 2022.03 · <em style="color:var(--text-dim)">5년 9개월</em></div>
-      <div class="timeline-company">조이젠 (Joyzen)</div>
-      <div class="timeline-role">개발기획실 차장 (수석연구원)</div>
-      <div class="timeline-card">
-        <div class="timeline-tech">
-          <span class="tech-chip">CodeIgniter 3</span>
-          <span class="tech-chip">Sphinx 검색엔진</span>
-          <span class="tech-chip">KISA SEED</span>
-          <span class="tech-chip orange">ISMS 인증</span>
+    <!-- 3. Joyzen -->
+    <div class="tl-item relative mb-12">
+      <span class="absolute -left-[50px] top-1.5 w-2.5 h-2.5 rounded-full bg-acc
+                   shadow-[0_0_12px_#00c8ff]"></span>
+      <div class="font-mono text-xs text-dim tracking-widest mb-1">
+        2016.07 — 2022.03
+        <span class="text-dim/60 ml-2">· 5년 9개월</span>
+      </div>
+      <div class="text-2xl font-bold text-bright mb-1">조이젠 (Joyzen)</div>
+      <div class="font-mono text-xs text-acc mb-4">개발기획실 차장 (수석연구원)</div>
+      <div class="bg-sur border border-bdr border-l-2 border-l-acc p-5">
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc/7 border border-acc/20 text-acc">CodeIgniter 3</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc/7 border border-acc/20 text-acc">Sphinx 검색엔진</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc3/7 border border-acc3/20 text-acc3">ISMS 인증</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc3/7 border border-acc3/20 text-acc3">KISA SEED</span>
         </div>
-        <ul class="timeline-bullets">
-          <li>MySQL 기반 검색을 <strong style="color:var(--accent)">Sphinx 검색엔진</strong>으로 마이그레이션 — 검색 속도 및 성능 대폭 개선</li>
-          <li>모바일 웹 CodeIgniter 3 마이그레이션, ActiveX 제거 및 웹 표준 결제 모듈 도입</li>
-          <li>네이버 가격비교 크롤링 연동 자동 발주 시스템 구축</li>
-          <li>ISMS 인증 대응 — KISA SEED 암호화, Google OTP, 네트워크 망분리 보안 설정</li>
-          <li>네이버페이 등 외부 결제 모듈 연동</li>
+        <ul class="space-y-1.5 text-sm text-muted list-none">
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            MySQL 기반 검색을 <strong class="text-acc font-semibold">Sphinx 검색엔진</strong>으로 마이그레이션 — 검색 속도·성능 대폭 개선
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            모바일 웹 CodeIgniter 3 마이그레이션, ActiveX 제거 및 웹 표준 결제 모듈 도입
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            네이버 가격비교 크롤링 연동 자동 발주 시스템 구축
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-acc2 flex-shrink-0 mt-0.5">chevron_right</span>
+            ISMS 인증 대응 — KISA SEED 암호화, Google OTP, 네트워크 망분리 보안 설정
+          </li>
         </ul>
       </div>
     </div>
 
-    <div class="timeline-item">
-      <div class="timeline-dot dim"></div>
-      <div class="timeline-period">2014.04 — 2016.07 · <em style="color:var(--text-dim)">2년 4개월</em></div>
-      <div class="timeline-company">디지털태인</div>
-      <div class="timeline-role">개발사업부 차장 (수석연구원)</div>
-      <div class="timeline-card old">
-        <div class="timeline-tech">
-          <span class="tech-chip">PHP</span>
-          <span class="tech-chip">CodeIgniter</span>
-          <span class="tech-chip">Oracle 10g→11g</span>
-          <span class="tech-chip">XenServer</span>
-          <span class="tech-chip orange">부동산 빅데이터</span>
+    <!-- 4. Digital Taein -->
+    <div class="tl-item relative mb-12">
+      <span class="absolute -left-[50px] top-1.5 w-2 h-2 rounded-full bg-bdr"></span>
+      <div class="font-mono text-xs text-dim tracking-widest mb-1">
+        2014.04 — 2016.07
+        <span class="text-dim/60 ml-2">· 2년 4개월</span>
+      </div>
+      <div class="text-2xl font-bold text-bright mb-1">디지털태인</div>
+      <div class="font-mono text-xs text-acc mb-4">개발사업부 차장 (수석연구원)</div>
+      <div class="bg-sur border border-bdr border-l-2 border-l-bdr p-5">
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">PHP / CodeIgniter</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">Oracle 10g to 11g</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 bg-acc3/7 border border-acc3/20 text-acc3">3,200만 필지</span>
+          <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">XenServer</span>
         </div>
-        <ul class="timeline-bullets">
-          <li>12개 이상 공공기관 및 대법원 경매정보 크롤링 DB 구축 및 정기 업데이트 파이프라인</li>
-          <li>주소 정제 및 <strong style="color:var(--accent)">PNU 고유번호 생성 API</strong> 핵심 로직 개발</li>
-          <li>전국 약 3,200만 필지 개별공시지가·토지이용계획 수집 및 금융권 납품</li>
-          <li>Oracle DB 10g → 11g 마이그레이션 완료</li>
+        <ul class="space-y-1.5 text-sm text-muted list-none">
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-dim flex-shrink-0 mt-0.5">chevron_right</span>
+            12개 이상 공공기관 및 대법원 경매정보 크롤링 DB 구축 및 정기 업데이트 파이프라인 개발
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-dim flex-shrink-0 mt-0.5">chevron_right</span>
+            주소 정제 및 PNU 고유번호 생성 API 핵심 로직 개발
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-dim flex-shrink-0 mt-0.5">chevron_right</span>
+            전국 약 3,200만 필지 개별공시지가·토지이용계획 수집 및 금융권 납품
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-dim flex-shrink-0 mt-0.5">chevron_right</span>
+            Oracle DB 10g to 11g 마이그레이션 완료, XenServer 기반 데이터 수집 서버 구성
+          </li>
         </ul>
       </div>
     </div>
 
-    <div class="timeline-item">
-      <div class="timeline-dot dim"></div>
-      <div class="timeline-period">2007.12 — 2013.05 · <em style="color:var(--text-dim)">5년 6개월</em></div>
-      <div class="timeline-company">지빅스 (Geovix)</div>
-      <div class="timeline-role">개발사업부 차장 (수석연구원)</div>
-      <div class="timeline-card old">
-        <ul class="timeline-bullets">
-          <li>웹하드 서비스 3개 시스템 구축·관리 (900여대 서버 환경)</li>
-          <li>LVS/HAProxy + HeartBeat 기반 고가용성(HA) 웹/DB 부하 분산 아키텍처 구축</li>
-          <li>MySQL Replication, DRBD 구성, Snort NIDS 보안 시스템 운영</li>
+    <!-- 5. Geovix -->
+    <div class="tl-item relative mb-12">
+      <span class="absolute -left-[50px] top-1.5 w-2 h-2 rounded-full bg-bdr"></span>
+      <div class="font-mono text-xs text-dim tracking-widest mb-1">
+        2007.12 — 2013.05
+        <span class="text-dim/60 ml-2">· 5년 6개월</span>
+      </div>
+      <div class="text-2xl font-bold text-bright mb-1">지빅스 (Geovix)</div>
+      <div class="font-mono text-xs text-acc mb-4">개발사업부 차장 (수석연구원)</div>
+      <div class="bg-sur border border-bdr border-l-2 border-l-bdr p-5">
+        <ul class="space-y-1.5 text-sm text-muted list-none">
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-dim flex-shrink-0 mt-0.5">chevron_right</span>
+            웹하드 서비스 3개 시스템 구축·관리 (900여대 서버 환경)
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-dim flex-shrink-0 mt-0.5">chevron_right</span>
+            LVS/HAProxy + HeartBeat 기반 고가용성(HA) 웹/DB 부하 분산 아키텍처 구축
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-dim flex-shrink-0 mt-0.5">chevron_right</span>
+            MySQL Replication, DRBD 구성, Snort NIDS 보안 시스템 운영
+          </li>
         </ul>
       </div>
     </div>
 
-    <div class="timeline-item">
-      <div class="timeline-dot dim"></div>
-      <div class="timeline-period">2000.04 — 2007.09 · <em style="color:var(--text-dim)">초기 경력</em></div>
-      <div class="timeline-company">삼성네트웍스(시스게이트) · 알티캐스트 · 한솔교육</div>
-      <div class="timeline-role">시스템 엔지니어 / 네트워크 엔지니어</div>
-      <div class="timeline-card old">
-        <ul class="timeline-bullets">
-          <li>삼성네트웍스 서초/과천 IDC 서버 호스팅 및 GDC 프로젝트 (400여대 서버 이전·구성)</li>
-          <li>사내 통합 인프라(자산관리, HRM) PHP 웹 시스템 구축</li>
-          <li>RRDtool 기반 Linux/Unix/Windows 통합 모니터링 시스템 개발</li>
+    <!-- 6. Early career -->
+    <div class="tl-item relative">
+      <span class="absolute -left-[50px] top-1.5 w-2 h-2 rounded-full bg-bdr"></span>
+      <div class="font-mono text-xs text-dim tracking-widest mb-1">
+        2000.04 — 2007.09
+        <span class="text-dim/60 ml-2">· 초기 경력</span>
+      </div>
+      <div class="text-xl font-bold text-bright mb-1">삼성네트웍스(시스게이트) · 알티캐스트 · 한솔교육</div>
+      <div class="font-mono text-xs text-acc mb-4">시스템 / 네트워크 엔지니어</div>
+      <div class="bg-sur border border-bdr border-l-2 border-l-bdr p-5">
+        <ul class="space-y-1.5 text-sm text-muted list-none">
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-dim flex-shrink-0 mt-0.5">chevron_right</span>
+            삼성네트웍스 서초/과천 IDC 서버 호스팅 및 GDC 프로젝트 — 400여대 서버 이전·구성
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-dim flex-shrink-0 mt-0.5">chevron_right</span>
+            사내 통합 인프라(자산관리, HRM) PHP 웹 시스템 구축
+          </li>
+          <li class="flex gap-3">
+            <span class="material-icons mi-sm text-dim flex-shrink-0 mt-0.5">chevron_right</span>
+            PHP + Shell + RRDtool 기반 Linux/Unix/Windows 통합 모니터링 시스템 개발
+          </li>
         </ul>
       </div>
     </div>
@@ -1087,275 +586,339 @@
   </div>
 </section>
 
-<div class="glow-sep"></div>
+<div class="sep"></div>
 
 <!-- PROJECTS -->
-<section id="projects">
-  <div class="section-header">
-    <span class="section-num">03</span>
-    <h2 class="section-title">Key Projects</h2>
-    <div class="section-line"></div>
+<section id="projects" class="relative z-10 max-w-7xl mx-auto px-12 py-24">
+  <div class="flex items-center gap-5 mb-14">
+    <span class="font-mono text-xs text-acc tracking-widest">03</span>
+    <h2 class="text-4xl font-bold text-bright tracking-tight">Key Projects</h2>
+    <div class="flex-1 h-px bg-gradient-to-r from-bdr to-transparent"></div>
   </div>
 
-  <div class="projects-grid">
-    <div class="project-card">
-      <div class="project-highlight">재직 중</div>
-      <div class="project-num">PROJECT_01</div>
-      <div class="project-title">RealValue<br>부동산 정보 플랫폼</div>
-      <div class="project-desc">네이버 지도 기반 매물정보·실거래가·공적장부 통합 서비스. 10여 종 공공데이터 수집·정제 파이프라인 및 내/외부 API 시스템 설계·구현.</div>
-      <div class="project-tags">
-        <span class="project-tag">Laravel 12</span>
-        <span class="project-tag">PostgreSQL</span>
-        <span class="project-tag">AWS</span>
-        <span class="project-tag">GIS API</span>
-        <span class="project-tag">공공데이터</span>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-bdr">
+
+    <div class="pj bg-sur p-8">
+      <div class="absolute top-5 right-5">
+        <span class="font-mono text-[9px] px-2 py-0.5 bg-acc2/10 border border-acc2/30 text-acc2 tracking-widest uppercase">
+          구직중
+        </span>
+      </div>
+      <div class="font-mono text-xs text-dim tracking-widest mb-4">PROJECT_01</div>
+      <div class="text-xl font-bold text-bright mb-2 leading-snug">RealValue<br>부동산 정보 플랫폼</div>
+      <div class="text-sm text-dim leading-relaxed mb-5">네이버 지도 기반 매물정보·실거래가·공적장부 통합 서비스. 10여 종 공공데이터 수집·정제 파이프라인 및 API 시스템 설계.</div>
+      <div class="flex flex-wrap gap-1.5">
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">Laravel 12</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">PostgreSQL</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">AWS</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">GIS API</span>
       </div>
     </div>
 
-    <div class="project-card">
-      <div class="project-num">PROJECT_02</div>
-      <div class="project-title">오픈마켓 통합<br>연동 솔루션</div>
-      <div class="project-desc">스마트스토어, 쿠팡, 11번가, 옥션, G마켓 등 6대 주요 오픈마켓 API 완전 연동. 상품·주문·송장 처리 자동화 시스템.</div>
-      <div class="project-tags">
-        <span class="project-tag">PHP 8.1</span>
-        <span class="project-tag">Laravel 10</span>
-        <span class="project-tag">REST API</span>
-        <span class="project-tag">MySQL</span>
+    <div class="pj bg-sur p-8">
+      <div class="font-mono text-xs text-dim tracking-widest mb-4">PROJECT_02</div>
+      <div class="text-xl font-bold text-bright mb-2 leading-snug">오픈마켓 통합<br>연동 솔루션</div>
+      <div class="text-sm text-dim leading-relaxed mb-5">스마트스토어, 쿠팡, 11번가, 옥션, G마켓 등 6대 오픈마켓 API 완전 연동. 상품·주문·송장 처리 자동화 시스템.</div>
+      <div class="flex flex-wrap gap-1.5">
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">PHP 8.1</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">Laravel 10</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">REST API</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">MySQL</span>
       </div>
     </div>
 
-    <div class="project-card">
-      <div class="project-num">PROJECT_03</div>
-      <div class="project-title">B2B Sourcing<br>멀티 사이트 시스템</div>
-      <div class="project-desc">판매자·공급자·관리자 권한별 독립 3개 사이트 + React Native 공급처 전용 앱. SKU 기반 다중 옵션 재고 관리 아키텍처.</div>
-      <div class="project-tags">
-        <span class="project-tag">CodeIgniter 4</span>
-        <span class="project-tag">React Native</span>
-        <span class="project-tag">Android</span>
-        <span class="project-tag">MySQL</span>
+    <div class="pj bg-sur p-8">
+      <div class="font-mono text-xs text-dim tracking-widest mb-4">PROJECT_03</div>
+      <div class="text-xl font-bold text-bright mb-2 leading-snug">B2B Sourcing<br>멀티 사이트 시스템</div>
+      <div class="text-sm text-dim leading-relaxed mb-5">판매자·공급자·관리자 권한별 독립 3개 사이트 + React Native 공급처 전용 앱. SKU 기반 재고 관리 아키텍처.</div>
+      <div class="flex flex-wrap gap-1.5">
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">CodeIgniter 4</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">React Native</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">MySQL</span>
       </div>
     </div>
 
-    <div class="project-card">
-      <div class="project-num">PROJECT_04</div>
-      <div class="project-title">Ultra Vision<br>보행 신호 감지 앱</div>
-      <div class="project-desc">저시력자·고령자를 위한 YOLO v11 기반 실시간 신호등 감지 서비스. V2X API 연동으로 음성·진동 알림 제공.</div>
-      <div class="project-tags">
-        <span class="project-tag">Python</span>
-        <span class="project-tag">YOLOv11</span>
-        <span class="project-tag">FastAPI</span>
-        <span class="project-tag">React Native</span>
-        <span class="project-tag">V2X API</span>
+    <div class="pj bg-sur p-8">
+      <div class="font-mono text-xs text-dim tracking-widest mb-4">PROJECT_04</div>
+      <div class="text-xl font-bold text-bright mb-2 leading-snug">Ultra Vision<br>보행 신호 감지 앱</div>
+      <div class="text-sm text-dim leading-relaxed mb-5">저시력자·고령자를 위한 YOLO v11 기반 실시간 신호등 감지 서비스. V2X API 연동으로 음성·진동 알림 제공.</div>
+      <div class="flex flex-wrap gap-1.5">
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">Python</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">YOLOv11</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">FastAPI</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">React Native</span>
       </div>
     </div>
 
-    <div class="project-card">
-      <div class="project-num">PROJECT_05</div>
-      <div class="project-title">PNU 생성 엔진<br>3,200만 필지</div>
-      <div class="project-desc">대법원 경매 주소 정제 및 PNU 고유번호 자동 생성 핵심 API. 전국 3,200만 필지 데이터 금융권 납품 파이프라인.</div>
-      <div class="project-tags">
-        <span class="project-tag">PHP</span>
-        <span class="project-tag">Oracle</span>
-        <span class="project-tag">크롤링</span>
-        <span class="project-tag">공공 API</span>
+    <div class="pj bg-sur p-8">
+      <div class="font-mono text-xs text-dim tracking-widest mb-4">PROJECT_05</div>
+      <div class="text-xl font-bold text-bright mb-2 leading-snug">PNU 생성 엔진<br>3,200만 필지</div>
+      <div class="text-sm text-dim leading-relaxed mb-5">대법원 경매 주소 정제 및 PNU 고유번호 자동 생성 핵심 API. 전국 3,200만 필지 데이터 금융권 납품 파이프라인.</div>
+      <div class="flex flex-wrap gap-1.5">
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">PHP</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">Oracle</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">크롤링</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">공공 API</span>
       </div>
     </div>
 
-    <div class="project-card">
-      <div class="project-num">PROJECT_06</div>
-      <div class="project-title">IoT 온습도 관제<br>시스템</div>
-      <div class="project-desc">ESP32 기반 온습도 센서 데이터 수집 디바이스 + Laravel 관리 API + React Native 앱 연동 End-to-End IoT 시스템.</div>
-      <div class="project-tags">
-        <span class="project-tag">ESP32</span>
-        <span class="project-tag">Laravel 10</span>
-        <span class="project-tag">React Native</span>
-        <span class="project-tag">IoT</span>
+    <div class="pj bg-sur p-8">
+      <div class="font-mono text-xs text-dim tracking-widest mb-4">PROJECT_06</div>
+      <div class="text-xl font-bold text-bright mb-2 leading-snug">IoT 온습도 관제<br>시스템</div>
+      <div class="text-sm text-dim leading-relaxed mb-5">ESP32 온습도 센서 + Laravel 관리 API + React Native 앱 연동 End-to-End IoT 시스템 구축.</div>
+      <div class="flex flex-wrap gap-1.5">
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">ESP32</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">Laravel 10</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">React Native</span>
+        <span class="font-mono text-[10px] px-2 py-0.5 border border-bdr text-dim">IoT</span>
       </div>
     </div>
+
   </div>
 </section>
 
-<div class="glow-sep"></div>
+<div class="sep"></div>
 
 <!-- CERTS -->
-<section id="certs" style="padding-bottom:60px;">
-  <div class="section-header">
-    <span class="section-num">04</span>
-    <h2 class="section-title">Certifications</h2>
-    <div class="section-line"></div>
+<section id="certs" class="relative z-10 max-w-7xl mx-auto px-12 py-24">
+  <div class="flex items-center gap-5 mb-14">
+    <span class="font-mono text-xs text-acc tracking-widest">04</span>
+    <h2 class="text-4xl font-bold text-bright tracking-tight">Certifications</h2>
+    <div class="flex-1 h-px bg-gradient-to-r from-bdr to-transparent"></div>
   </div>
-  <div class="certs-grid">
-    <div class="cert-card">
-      <div class="cert-year">2005.12</div>
-      <div class="cert-name">정보처리기사</div>
-      <div class="cert-org">한국산업인력관리공단</div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-bdr">
+    <div class="bg-sur p-6 text-center hover:bg-sur2 transition-colors">
+      <div class="font-mono text-xs text-dim mb-2">2005.12</div>
+      <div class="flex justify-center mb-3">
+        <span class="material-icons mi-lg text-acc">verified</span>
+      </div>
+      <div class="font-bold text-bright mb-1">정보처리기사</div>
+      <div class="font-mono text-xs text-dim">한국산업인력관리공단</div>
     </div>
-    <div class="cert-card">
-      <div class="cert-year">2005.09</div>
-      <div class="cert-name">리눅스마스터 2급</div>
-      <div class="cert-org">한국정보통신인력개발센터</div>
+    <div class="bg-sur p-6 text-center hover:bg-sur2 transition-colors">
+      <div class="font-mono text-xs text-dim mb-2">2005.09</div>
+      <div class="flex justify-center mb-3">
+        <span class="material-icons mi-lg text-acc">terminal</span>
+      </div>
+      <div class="font-bold text-bright mb-1">리눅스마스터 2급</div>
+      <div class="font-mono text-xs text-dim">한국정보통신인력개발센터</div>
     </div>
-    <div class="cert-card">
-      <div class="cert-year">2005.04</div>
-      <div class="cert-name">OCP</div>
-      <div class="cert-org">Oracle</div>
+    <div class="bg-sur p-6 text-center hover:bg-sur2 transition-colors">
+      <div class="font-mono text-xs text-dim mb-2">2005.04</div>
+      <div class="flex justify-center mb-3">
+        <span class="material-icons mi-lg text-acc">storage</span>
+      </div>
+      <div class="font-bold text-bright mb-1">OCP</div>
+      <div class="font-mono text-xs text-dim">Oracle</div>
     </div>
-    <div class="cert-card">
-      <div class="cert-year">2001.03</div>
-      <div class="cert-name">HP-UXP</div>
-      <div class="cert-org">Hewlett Packard</div>
+    <div class="bg-sur p-6 text-center hover:bg-sur2 transition-colors">
+      <div class="font-mono text-xs text-dim mb-2">2001.03</div>
+      <div class="flex justify-center mb-3">
+        <span class="material-icons mi-lg text-acc">dns</span>
+      </div>
+      <div class="font-bold text-bright mb-1">HP-UXP</div>
+      <div class="font-mono text-xs text-dim">Hewlett Packard</div>
     </div>
   </div>
 </section>
 
-<div class="glow-sep"></div>
+<div class="sep"></div>
 
 <!-- CONTACT -->
-<section id="contact" style="padding-bottom:60px;">
-  <div class="section-header">
-    <span class="section-num">05</span>
-    <h2 class="section-title">Contact</h2>
-    <div class="section-line"></div>
+<section id="contact" class="relative z-10 max-w-7xl mx-auto px-12 py-24">
+  <div class="flex items-center gap-5 mb-14">
+    <span class="font-mono text-xs text-acc tracking-widest">05</span>
+    <h2 class="text-4xl font-bold text-bright tracking-tight">Contact</h2>
+    <div class="flex-1 h-px bg-gradient-to-r from-bdr to-transparent"></div>
   </div>
-  <div class="contact-row">
-    <div class="contact-block">
-      <div class="contact-icon">✉</div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-bdr mb-px">
+    <div class="bg-sur p-7 flex items-center gap-4 hover:bg-sur2 transition-colors group">
+      <div class="w-11 h-11 flex items-center justify-center bg-acc/8 border border-acc/20
+                  group-hover:border-acc/50 transition-colors flex-shrink-0">
+        <span class="material-icons text-acc">mail</span>
+      </div>
       <div>
-        <div class="contact-label">Email</div>
-        <a href="mailto:mirnet96@naver.com" class="contact-value">mirnet96@naver.com</a>
+        <div class="font-mono text-[10px] text-dim tracking-widest uppercase mb-1">Email</div>
+        <a href="mailto:mirnet96@naver.com"
+           class="text-sm text-bright hover:text-acc transition-colors no-underline">
+          mirnet96@naver.com
+        </a>
       </div>
     </div>
-    <div class="contact-block">
-      <div class="contact-icon">⌥</div>
+
+    <div class="bg-sur p-7 flex items-center gap-4 hover:bg-sur2 transition-colors group">
+      <div class="w-11 h-11 flex items-center justify-center bg-acc/8 border border-acc/20
+                  group-hover:border-acc/50 transition-colors flex-shrink-0">
+        <span class="material-icons text-acc">code</span>
+      </div>
       <div>
-        <div class="contact-label">GitHub</div>
-        <a href="https://github.com/mirnet96" target="_blank" class="contact-value">github.com/mirnet96</a>
+        <div class="font-mono text-[10px] text-dim tracking-widest uppercase mb-1">GitHub</div>
+        <a href="https://github.com/mirnet96" target="_blank"
+           class="text-sm text-bright hover:text-acc transition-colors no-underline">
+          github.com/mirnet96
+        </a>
       </div>
     </div>
-    <div class="contact-block">
-      <div class="contact-icon">☎</div>
+
+    <div class="bg-sur p-7 flex items-center gap-4 hover:bg-sur2 transition-colors group">
+      <div class="w-11 h-11 flex items-center justify-center bg-acc/8 border border-acc/20
+                  group-hover:border-acc/50 transition-colors flex-shrink-0">
+        <span class="material-icons text-acc">phone</span>
+      </div>
       <div>
-        <div class="contact-label">Phone</div>
-        <span class="contact-value">010-3387-5497</span>
+        <div class="font-mono text-[10px] text-dim tracking-widest uppercase mb-1">Phone</div>
+        <span class="text-sm text-bright">010-3387-5497</span>
       </div>
     </div>
-    <div class="contact-block">
-      <div class="contact-icon">⊙</div>
-      <div>
-        <div class="contact-label">Location</div>
-        <span class="contact-value">서울 관악구</span>
+
+    <div class="bg-sur p-7 flex items-center gap-4 hover:bg-sur2 transition-colors group">
+      <div class="w-11 h-11 flex items-center justify-center bg-acc/8 border border-acc/20
+                  group-hover:border-acc/50 transition-colors flex-shrink-0">
+        <span class="material-icons text-acc">location_on</span>
       </div>
+      <div>
+        <div class="font-mono text-[10px] text-dim tracking-widest uppercase mb-1">Location</div>
+        <span class="text-sm text-bright">서울 관악구</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desired conditions bar -->
+  <div class="bg-sur border-t-0 border border-bdr p-7 flex flex-wrap gap-8 items-center">
+    <div class="flex items-center gap-2">
+      <span class="material-icons mi-sm text-acc2">work</span>
+      <span class="font-mono text-xs text-dim uppercase tracking-widest mr-1">고용형태</span>
+      <span class="font-mono text-xs text-bright">정규직 / 프리랜서</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="material-icons mi-sm text-acc2">payments</span>
+      <span class="font-mono text-xs text-dim uppercase tracking-widest mr-1">희망연봉</span>
+      <span class="font-mono text-xs text-acc font-bold">7,000만원 이상</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="material-icons mi-sm text-acc2">map</span>
+      <span class="font-mono text-xs text-dim uppercase tracking-widest mr-1">근무지</span>
+      <span class="font-mono text-xs text-bright">서울 전지역</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="material-icons mi-sm text-acc2">business_center</span>
+      <span class="font-mono text-xs text-dim uppercase tracking-widest mr-1">직무</span>
+      <span class="font-mono text-xs text-bright">백엔드 / 웹개발자</span>
     </div>
   </div>
 </section>
 
-<footer>
-  <span class="copy">© 2026 Gi-chang Oh — PHP Full-Stack Developer</span>
-  <span class="copy" style="color:var(--accent);">// 25+ years · still shipping</span>
+<!-- FOOTER -->
+<footer class="relative z-10 border-t border-bdr px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
+  <span class="font-mono text-xs text-dim">copyright 2026 Gi-chang Oh -- PHP Full-Stack Developer</span>
+  <span class="font-mono text-xs text-acc tracking-widest">// 25+ years -- still shipping</span>
 </footer>
 
+<!-- SCRIPTS -->
 <script>
-// ===== TERMINAL TYPEWRITER =====
+/* ---- Terminal ---- */
 const lines = [
-  { type: 'cmd', text: 'php artisan about --developer' },
-  { type: 'out', parts: [['key','name'], ['dim',' => '], ['str','오기창 (Gi-chang Oh)']] },
-  { type: 'out', parts: [['key','experience'], ['dim',' => '], ['val','25+ years']] },
-  { type: 'out', parts: [['key','specialty'], ['dim',' => '], ['str','PHP / Laravel / CI']] },
-  { type: 'blank' },
-  { type: 'cmd', text: 'php artisan stack:list' },
-  { type: 'out', parts: [['str','[✓]'], ['dim',' Laravel 12/13, CI 4']] },
-  { type: 'out', parts: [['str','[✓]'], ['dim',' PostgreSQL, MySQL, Oracle']] },
-  { type: 'out', parts: [['str','[✓]'], ['dim',' AWS, Docker, Linux']] },
-  { type: 'out', parts: [['str','[✓]'], ['dim',' React Native, TALL Stack']] },
-  { type: 'blank' },
-  { type: 'cmd', text: 'php artisan market:count' },
-  { type: 'out', parts: [['val','6'], ['dim',' open markets integrated ✓']] },
-  { type: 'cursor' },
+  {t:'cmd', s:'php artisan about --developer'},
+  {t:'kv',  k:'name',       v:'Oh Gi-chang', vc:'#00ff9d'},
+  {t:'kv',  k:'experience', v:'25+ years',   vc:'#ff6b35'},
+  {t:'kv',  k:'specialty',  v:'PHP / Laravel / CI', vc:'#00ff9d'},
+  {t:'bl'},
+  {t:'cmd', s:'php artisan stack:list'},
+  {t:'out', s:'[OK]  Laravel 12/13, CI 4',          oc:'#c8dae8'},
+  {t:'out', s:'[OK]  PostgreSQL, MySQL, Oracle',     oc:'#c8dae8'},
+  {t:'out', s:'[OK]  AWS, Docker, Linux',            oc:'#c8dae8'},
+  {t:'out', s:'[OK]  React Native, TALL Stack',      oc:'#c8dae8'},
+  {t:'bl'},
+  {t:'cmd', s:'php artisan market:count'},
+  {t:'out', s:'6 open markets integrated',           oc:'#00c8ff'},
+  {t:'cur'},
 ];
 
-const tc = document.getElementById('terminal-content');
-let lineIdx = 0;
+const tc = document.getElementById('tc');
+let li = 0;
 
-function renderLine(line) {
-  const div = document.createElement('div');
-  if (line.type === 'blank') { div.style.height = '8px'; tc.appendChild(div); return; }
-  if (line.type === 'cursor') {
-    div.className = 't-line';
-    div.innerHTML = `<span class="t-prompt">❯</span><span class="cursor-blink"></span>`;
-    tc.appendChild(div);
-    return;
+function sp(text, color) {
+  const s = document.createElement('span');
+  s.textContent = text;
+  s.style.color = color;
+  return s;
+}
+
+function renderLine(ln) {
+  const d = document.createElement('div');
+  d.style.cssText = 'display:flex;align-items:flex-start;gap:7px';
+  if (ln.t === 'bl') { d.style.height = '8px'; tc.appendChild(d); return; }
+  if (ln.t === 'cur') {
+    d.innerHTML = '<span style="color:#00ff9d;flex-shrink:0">&#62;</span><span class="cursor-blink"></span>';
+    tc.appendChild(d); return;
   }
-  div.className = 't-line';
-  if (line.type === 'cmd') {
-    div.innerHTML = `<span class="t-prompt">❯</span><span class="t-cmd">${line.text}</span>`;
-  } else {
-    let html = '<span style="width:20px;display:inline-block"></span>';
-    for (const [cls, txt] of line.parts) {
-      const map = { key:'t-key', str:'t-str', val:'t-val', dim:'t-out' };
-      html += `<span class="${map[cls] || 't-out'}">${txt}</span>`;
-    }
-    div.innerHTML = html;
+  if (ln.t === 'cmd') {
+    d.appendChild(sp('> ', '#00ff9d'));
+    d.appendChild(sp(ln.s, '#e8f4ff'));
+    tc.appendChild(d); return;
   }
-  tc.appendChild(div);
+  if (ln.t === 'kv') {
+    d.appendChild(sp('    ', '#5a7a99'));
+    d.appendChild(sp(ln.k, '#00c8ff'));
+    d.appendChild(sp(' => ', '#5a7a99'));
+    d.appendChild(sp(ln.v, ln.vc));
+    tc.appendChild(d); return;
+  }
+  if (ln.t === 'out') {
+    d.appendChild(sp('    ', '#5a7a99'));
+    d.appendChild(sp(ln.s, ln.oc));
+    tc.appendChild(d); return;
+  }
 }
 
-function runTerminal() {
-  if (lineIdx >= lines.length) return;
-  renderLine(lines[lineIdx]);
-  lineIdx++;
-  setTimeout(runTerminal, lineIdx < 3 ? 300 : 100);
+function runTerm() {
+  if (li >= lines.length) return;
+  renderLine(lines[li++]);
+  setTimeout(runTerm, li < 3 ? 360 : 130);
 }
-setTimeout(runTerminal, 1400);
+setTimeout(runTerm, 1600);
 
-// ===== COUNTERS =====
-function animateCounter(el, target, suffix = '') {
-  let current = 0;
-  const step = target / 40;
-  const timer = setInterval(() => {
-    current = Math.min(current + step, target);
-    el.textContent = Math.round(current) + suffix;
-    if (current >= target) clearInterval(timer);
-  }, 30);
+/* ---- Counters ---- */
+function animCount(el, target, sfx) {
+  let cur = 0, step = target / 40;
+  const t = setInterval(() => {
+    cur = Math.min(cur + step, target);
+    el.textContent = Math.round(cur) + (sfx || '');
+    if (cur >= target) clearInterval(t);
+  }, 28);
 }
-
 setTimeout(() => {
-  animateCounter(document.getElementById('counter-years'), 25, '+');
-  animateCounter(document.getElementById('counter-companies'), 9, '');
-  animateCounter(document.getElementById('counter-certs'), 4, '');
-  animateCounter(document.getElementById('counter-markets'), 6, '');
-}, 800);
+  animCount(document.getElementById('cy'), 25, '+');
+  animCount(document.getElementById('cc'),  9, '');
+  animCount(document.getElementById('ct'),  4, '');
+  animCount(document.getElementById('cm'),  6, '');
+}, 900);
 
-// ===== SCROLL ANIMATIONS =====
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
+/* ---- Timeline scroll ---- */
+const tlObs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
     if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      observer.unobserve(e.target);
+      setTimeout(() => e.target.classList.add('vis'), i * 80);
+      tlObs.unobserve(e.target);
     }
   });
-}, { threshold: 0.1 });
+}, {threshold: 0.1});
+document.querySelectorAll('.tl-item').forEach(el => tlObs.observe(el));
 
-document.querySelectorAll('.timeline-item').forEach((el, i) => {
-  el.style.transitionDelay = `${i * 0.08}s`;
-  observer.observe(el);
-});
-
-// ===== SKILL BARS =====
-const barObserver = new IntersectionObserver((entries) => {
+/* ---- Skill bars ---- */
+const bObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      e.target.querySelectorAll('.bar-fill').forEach(bar => {
-        setTimeout(() => {
-          bar.style.width = bar.dataset.width + '%';
-        }, 200);
+      e.target.querySelectorAll('.b-fill').forEach(b => {
+        setTimeout(() => { b.style.width = b.dataset.w + '%'; }, 200);
       });
-      barObserver.unobserve(e.target);
+      bObs.unobserve(e.target);
     }
   });
-}, { threshold: 0.3 });
-
-const barsSection = document.querySelector('.skill-bars');
-if (barsSection) barObserver.observe(barsSection);
+}, {threshold: 0.3});
+const bSec = document.querySelector('.b-section');
+if (bSec) bObs.observe(bSec);
 </script>
 </body>
 </html>
