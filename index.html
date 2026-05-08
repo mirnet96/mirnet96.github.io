@@ -3,57 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gi-chang Oh | Portfolio</title>
+    <title>Gi-chang Oh | Senior Developer Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Fira Code', monospace; background-color: #0d1117; color: #c9d1d9; }
         .cursor { display: inline-block; width: 10px; height: 20px; background: #58a6ff; animation: blink 1s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .terminal-border { border: 1px solid #30363d; }
     </style>
 </head>
 <body class="p-4 md:p-10 leading-relaxed">
-    <div class="max-w-4xl mx-auto border border-gray-700 rounded-lg overflow-hidden shadow-2xl">
-        <div class="bg-gray-800 px-4 py-2 flex items-center gap-2">
-            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-            <span class="text-xs text-gray-400 ml-2">mirnet96@portfolio:~</span>
+    <div class="max-w-5xl mx-auto terminal-border rounded-lg overflow-hidden shadow-2xl">
+        <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+            <div class="flex gap-2">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
+            <span class="text-xs text-gray-400">mirnet96@portfolio: ~/main</span>
         </div>
 
-        <div class="p-6 bg-[#0d1117]">
-            <p class="mb-4"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> whoami</p>
-            <h1 class="text-3xl font-bold text-white mb-2 underline decoration-blue-500">오기창 (Gi-chang Oh)</h1>
-            <p class="text-gray-400 mb-6">27년 차 PHP Full-Stack Developer & System Architect</p>
+        <div class="p-8 bg-[#0d1117]">
+            <p class="mb-4 text-sm"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> whoami</p>
+            <h1 class="text-3xl font-bold text-white mb-2">오기창 (Gi-chang Oh)</h1>
+            <p class="text-blue-400 mb-6 font-medium">Full-Stack Developer & System Architect (27 Years Experience)</p>
 
-            <p class="mb-4"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> ls projects/featured</p>
+            <p class="mb-4 text-sm"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> ls --category=E-commerce</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                <div class="border border-gray-700 p-4 rounded bg-gray-900/50 hover:border-blue-500 transition">
-                    <h3 class="text-blue-400 font-bold mb-2">������ Ultra Vision (traffic-light)</h3>
-                    <p class="text-sm">저시력자 보행 신호등 알림 서비스. YOLOv11 기반 실시간 사물 인식 및 V2X API 연동.</p>
+                <div class="border border-gray-700 p-5 rounded bg-gray-900/30">
+                    <h3 class="text-white font-bold mb-2">E-commerce Platform Optimization</h3>
+                    <ul class="text-sm space-y-2 text-gray-300">
+                        <li>- 주요 6대 오픈마켓(쿠팡, 스마트스토어 등) API 연동 솔루션 구축</li>
+                        <li>- Sphinx 검색엔진 도입을 통한 상품 검색 속도 및 성능 개선</li>
+                        <li>- 실시간 재고 관리 및 발주 자동화 시스템 설계</li>
+                        <li>- ISMS 인증 준수 및 Kisa SEED 암호화 도입 등 보안 강화</li>
+                    </ul>
                 </div>
-                <div class="border border-gray-700 p-4 rounded bg-gray-900/50 hover:border-blue-500 transition">
-                    <h3 class="text-blue-400 font-bold mb-2">������ RealValue Platform</h3>
-                    <p class="text-sm">부동산 데이터 엔지니어링. 3,200만 필지 PNU 생성 및 GIS 연동 서비스 구축.</p>
+                <div class="border border-gray-700 p-5 rounded bg-gray-900/30">
+                    <h3 class="text-white font-bold mb-2">B2B Sourcing System (Lucid)</h3>
+                    <ul class="text-sm space-y-2 text-gray-300">
+                        <li>- SKU 기반 다중 옵션 재고 관리 아키텍처 설계</li>
+                        <li>- 판매자/공급자/관리자 권한별 독립 사이트 및 연동 API 개발</li>
+                        <li>- React Native 기반 공급처 관리 전용 앱 개발</li>
+                    </ul>
                 </div>
             </div>
 
-            <p class="mb-2"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> cat skills.txt</p>
-            <div class="flex flex-wrap gap-2 mb-8 text-sm">
-                <span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-800">Laravel 13</span>
-                <span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-800">TALL Stack</span>
-                <span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-800">Docker</span>
-                <span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-800">YOLO v11</span>
-                <span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-800">React Native</span>
+            <p class="mb-4 text-sm"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> ls --category=AI_Geospatial</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div class="border border-gray-700 p-5 rounded bg-gray-900/30">
+                    <h3 class="text-white font-bold mb-2">Ultra Vision (Traffic-light)</h3>
+                    <p class="text-sm text-gray-300">저시력자를 위한 YOLO v11 기반 실시간 보행 신호 감지 및 V2X API 연동 서비스.</p>
+                </div>
+                <div class="border border-gray-700 p-5 rounded bg-gray-900/30">
+                    <h3 class="text-white font-bold mb-2">Real Estate Data Platform</h3>
+                    <p class="text-sm text-gray-300">3,200만 필지 데이터의 PNU 생성 및 공공 데이터 크롤링 파이프라인 구축.</p>
+                </div>
             </div>
 
-            <p class="mb-4"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> <span class="cursor"></span></p>
+            <p class="mb-2 text-sm"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> cat skills.json</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-sm">
+                <div>
+                    <h4 class="text-blue-400 mb-2">[Backend]</h4>
+                    <p>PHP (Laravel 13, CI 4), Node.js, Python, Oracle, MySQL, PostgreSQL</p>
+                </div>
+                <div>
+                    <h4 class="text-blue-400 mb-2">[Frontend/App]</h4>
+                    <p>React Native, TALL Stack (Tailwind, Alpine, Livewire), React</p>
+                </div>
+                <div>
+                    <h4 class="text-blue-400 mb-2">[Infra/DevOps]</h4>
+                    <p>AWS, Docker, Linux Server Management, HAProxy, LVS, Git</p>
+                </div>
+            </div>
+
+            <p class="mb-4 text-sm"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> <span class="cursor"></span></p>
             
-            <footer class="mt-10 pt-6 border-t border-gray-800 text-xs text-gray-500 flex justify-between">
-                <span>© 2026 Gi-chang Oh. Built with Tailwind CSS.</span>
-                <div class="flex gap-4 text-blue-500">
-                    <a href="https://github.com/mirnet96" class="hover:underline">GitHub</a>
-                    <a href="mailto:mirnet96@naver.com" class="hover:underline">Email</a>
+            <footer class="mt-12 pt-6 border-t border-gray-800 text-xs text-gray-500 flex flex-col md:flex-row justify-between gap-4">
+                <span>&copy; 2026 Gi-chang Oh. All rights reserved.</span>
+                <div class="flex gap-6">
+                    <a href="mailto:mirnet96@naver.com" class="hover:text-blue-400 transition underline underline-offset-4">Email: mirnet96@naver.com</a>
+                    <a href="https://github.com/mirnet96" class="hover:text-blue-400 transition underline underline-offset-4">GitHub: mirnet96</a>
                 </div>
             </footer>
         </div>
