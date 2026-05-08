@@ -1,1 +1,62 @@
-<h1> mirnet96 </h1>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gi-chang Oh | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Fira Code', monospace; background-color: #0d1117; color: #c9d1d9; }
+        .cursor { display: inline-block; width: 10px; height: 20px; background: #58a6ff; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    </style>
+</head>
+<body class="p-4 md:p-10 leading-relaxed">
+    <div class="max-w-4xl mx-auto border border-gray-700 rounded-lg overflow-hidden shadow-2xl">
+        <div class="bg-gray-800 px-4 py-2 flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            <span class="text-xs text-gray-400 ml-2">mirnet96@portfolio:~</span>
+        </div>
+
+        <div class="p-6 bg-[#0d1117]">
+            <p class="mb-4"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> whoami</p>
+            <h1 class="text-3xl font-bold text-white mb-2 underline decoration-blue-500">오기창 (Gi-chang Oh)</h1>
+            <p class="text-gray-400 mb-6">27년 차 PHP Full-Stack Developer & System Architect</p>
+
+            <p class="mb-4"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> ls projects/featured</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div class="border border-gray-700 p-4 rounded bg-gray-900/50 hover:border-blue-500 transition">
+                    <h3 class="text-blue-400 font-bold mb-2">������ Ultra Vision (traffic-light)</h3>
+                    <p class="text-sm">저시력자 보행 신호등 알림 서비스. YOLOv11 기반 실시간 사물 인식 및 V2X API 연동.</p>
+                </div>
+                <div class="border border-gray-700 p-4 rounded bg-gray-900/50 hover:border-blue-500 transition">
+                    <h3 class="text-blue-400 font-bold mb-2">������ RealValue Platform</h3>
+                    <p class="text-sm">부동산 데이터 엔지니어링. 3,200만 필지 PNU 생성 및 GIS 연동 서비스 구축.</p>
+                </div>
+            </div>
+
+            <p class="mb-2"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> cat skills.txt</p>
+            <div class="flex flex-wrap gap-2 mb-8 text-sm">
+                <span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-800">Laravel 13</span>
+                <span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-800">TALL Stack</span>
+                <span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-800">Docker</span>
+                <span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-800">YOLO v11</span>
+                <span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-800">React Native</span>
+            </div>
+
+            <p class="mb-4"><span class="text-green-400">➜</span> <span class="text-blue-400">~</span> <span class="cursor"></span></p>
+            
+            <footer class="mt-10 pt-6 border-t border-gray-800 text-xs text-gray-500 flex justify-between">
+                <span>© 2026 Gi-chang Oh. Built with Tailwind CSS.</span>
+                <div class="flex gap-4 text-blue-500">
+                    <a href="https://github.com/mirnet96" class="hover:underline">GitHub</a>
+                    <a href="mailto:mirnet96@naver.com" class="hover:underline">Email</a>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
